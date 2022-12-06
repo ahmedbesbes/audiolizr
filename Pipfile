@@ -1,0 +1,18 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+bentoml = "*"
+pytube = "*"
+keybert = "*"
+transformers = "*"
+spacy = "*"
+whisper = {path = "./whisper"}
+
+[dev-packages]
+black = "*"
+
+[requires]
+python_version = "3.9"
