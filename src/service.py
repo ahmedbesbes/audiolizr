@@ -2,7 +2,7 @@ import io
 import asyncio
 import bentoml
 from bentoml.io import JSON, File
-from runners.video_downloder import VideoDownloader
+from runners.video_downloader import VideoDownloader
 from runners.audio_transcriber import AudioTranscriber
 from runners.keyword_extractor import KeywordExtractor
 from runners.entity_extractor import EntityExtractor
