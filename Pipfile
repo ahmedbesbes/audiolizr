@@ -4,12 +4,12 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-bentoml = "*"
 pytube = "*"
 keybert = "*"
 transformers = "*"
 spacy = "*"
 whisper = {path = "./whisper"}
+bentoml = "*"
 
 [dev-packages]
 black = "*"
