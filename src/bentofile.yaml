@@ -1,0 +1,17 @@
+service: "service.py:svc"
+include:
+  - "service.py"
+  - "runners/__init__.py"
+  - "runners/video_downloader.py"
+  - "runners/audio_transcriber.py"
+  - "runners/keyword_extractor.py"
+  - "runners/entity_extractor.py"
+  - "runners/sentiment_extractor.py"
+python:
+  requirements_txt: "../requirements.txt"
+docker: 
+  distro: debian
+  system_packages:
+    - git
+    - ffmpeg
+  setup_script: "setup.sh"
