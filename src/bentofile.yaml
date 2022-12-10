@@ -7,6 +7,7 @@ include:
   - "runners/keyword_extractor.py"
   - "runners/entity_extractor.py"
   - "runners/sentiment_extractor.py"
+  - "configuration.yaml"
 python:
   requirements_txt: "../requirements.txt"
 docker: 
@@ -15,3 +16,5 @@ docker:
     - git
     - ffmpeg
   setup_script: "setup.sh"
+  env:
+      BENTOML_CONFIG: "src/configuration.yaml"
