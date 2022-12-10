@@ -5,11 +5,11 @@ name = "pypi"
 
 [packages]
 pytube = "*"
-keybert = "*"
 transformers = "*"
 spacy = "*"
 whisper = {path = "./whisper"}
 bentoml = "*"
+yake = "*"
 
 [dev-packages]
 black = "*"
