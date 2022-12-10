@@ -3,6 +3,9 @@ import whisper
 
 
 class AudioTranscriber(bentoml.Runnable):
+    SUPPORTED_RESOURCES = ("nvidia.com/gpu", "cpu")
+    SUPPORTS_CPU_MULTI_THREADING = True
+
     def __init__(self):
         self.model = whisper.load_model("base")
 

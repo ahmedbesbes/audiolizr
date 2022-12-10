@@ -3,6 +3,9 @@ import spacy
 
 
 class EntityExtractor(bentoml.Runnable):
+    SUPPORTED_RESOURCES = ("cpu",)
+    SUPPORTS_CPU_MULTI_THREADING = False
+
     def __init__(self):
         self.model = spacy.load("en_core_web_md")
 
@@ -18,4 +21,6 @@ class EntityExtractor(bentoml.Runnable):
                 "end": ent.end_char,
             }
             entities.append(entity)
-        return entities
+
+        output = {"entities": entities}
+        return output
