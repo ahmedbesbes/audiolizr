@@ -5,7 +5,7 @@ from pytube import YouTube
 
 class VideoDownloader(bentoml.Runnable):
     SUPPORTED_RESOURCES = ("cpu",)
-    SUPPORTS_CPU_MULTI_THREADING = False
+    SUPPORTS_CPU_MULTI_THREADING = True
 
     @bentoml.Runnable.method(batchable=False)
     def download_video(self, url):
