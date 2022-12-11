@@ -1,5 +1,6 @@
 import bentoml
 import whisper
+import torch
 
 
 class AudioTranscriber(bentoml.Runnable):
@@ -8,6 +9,8 @@ class AudioTranscriber(bentoml.Runnable):
 
     def __init__(self):
         self.model = whisper.load_model("base")
+        self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        self.model.to(self.device)
 
     @bentoml.Runnable.method(batchable=False)
     def transcribe_audio(self, audio_path):
