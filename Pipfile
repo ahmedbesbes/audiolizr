@@ -11,6 +11,7 @@ whisper = {path = "./whisper"}
 bentoml = "*"
 yake = "*"
 nltk = "*"
+sentencepiece = "*"
 
 [dev-packages]
 black = "*"
