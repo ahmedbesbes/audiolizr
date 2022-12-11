@@ -16,5 +16,6 @@ docker:
     - git
     - ffmpeg
   setup_script: "setup.sh"
+  cuda_version: "11.6.2"
   env:
       BENTOML_CONFIG: "src/configuration.yaml"
