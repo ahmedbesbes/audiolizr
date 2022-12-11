@@ -14,3 +14,5 @@ tqdm==4.64.0
 transformers==4.24.0
 git+https://github.com/openai/whisper.git
 yake
+nltk
+sentencepiece
