@@ -7,11 +7,11 @@ This repo shows how to build and deploy a BentoML service that performs that tra
 
 <img src="./images/audiolizr.png">
 
-#### What's used under the hood?
+#### Dependencies
 
-pytube to download youtube audio
-whisper to transcribe audio data
-Yake to extract keywords
-spaCy to extract named entities
-transformers to perform sentiment analysis
+- [pytube](https://github.com/pytube/pytube) 
+- [whisper](https://github.com/openai/whisper)
+- [Yake](https://github.com/LIAAD/yake) 
+- [spaCy](https://github.com/explosion/spaCy)
+- [transformers](https://github.com/huggingface/transformers)
 
