@@ -6,7 +6,7 @@ include:
   - "runners/audio_transcriber.py"
   - "runners/keyword_extractor.py"
   - "runners/entity_extractor.py"
-  - "runners/sentiment_extractor.py"
+  - "runners/text_summarizer.py"
   - "configuration.yaml"
 python:
   requirements_txt: "../requirements.txt"
@@ -15,7 +15,7 @@ docker:
   system_packages:
     - git
     - ffmpeg
-  setup_script: "setup.sh"
   cuda_version: "11.6.2"
   env:
       BENTOML_CONFIG: "src/configuration.yaml"
+  setup_script: "setup.sh"
