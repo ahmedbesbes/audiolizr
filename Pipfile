@@ -10,6 +10,7 @@ spacy = "*"
 whisper = {path = "./whisper"}
 bentoml = "*"
 yake = "*"
+nltk = "*"
 
 [dev-packages]
 black = "*"
