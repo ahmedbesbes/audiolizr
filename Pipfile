@@ -12,6 +12,7 @@ bentoml = "*"
 yake = "*"
 nltk = "*"
 sentencepiece = "*"
+bentoctl = "*"
 
 [dev-packages]
 black = "*"
