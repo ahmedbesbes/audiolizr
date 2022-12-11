@@ -4,7 +4,7 @@ import yake
 
 
 class KeywordExtractor(bentoml.Runnable):
-    SUPPORTED_RESOURCES = ("nvidia.com/gpu", "cpu")
+    SUPPORTED_RESOURCES = ("cpu",)
     SUPPORTS_CPU_MULTI_THREADING = False
 
     def __init__(self, **kwargs):
