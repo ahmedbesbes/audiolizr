@@ -57,7 +57,7 @@ async def process_transcript(text):
 async def process_youtube_url(input_data):
     url = input_data.get("url", None)
 
-    path = runner_video_downloader.download_video.run(url)
+    path = await runner_video_downloader.download_video.async_run(url)
     transcript = await runner_audio_transcriber.transcribe_audio.async_run(path)
     transcript_text = transcript["text"]
     output = {}
