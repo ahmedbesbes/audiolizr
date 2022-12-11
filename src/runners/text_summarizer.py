@@ -1,10 +1,15 @@
 import bentoml
 import torch
 from transformers import T5ForConditionalGeneration, T5Tokenizer
+
+import nltk
+
+nltk.download("punkt")
 from nltk.tokenize import sent_tokenize
 
 
 class TextSummarizer(bentoml.Runnable):
+    SUPPORTS_CPU_MULTI_THREADING = True
     SUPPORTED_RESOURCES = ("nvidia.com/gpu", "cpu")
 
     def __init__(self):
