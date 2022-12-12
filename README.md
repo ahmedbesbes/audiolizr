@@ -1,6 +1,6 @@
 # audiolizr
 
-Audiolizr (*a contraction of **audio** and **analyzer***) a BentoML service that transcribes Youtube videos and extracts the following metadata from them: 
+Audiolizr (*a contraction of **audio** and **analyzer***) is a BentoML service that transcribes Youtube videos and extracts the following metadata from them: 
 - keywords and topics using the Yake algorithm
 - a generated summary using the T5 algorithm
 - named entities (people's name, locations, products, organizations, etc.) using spaCy
