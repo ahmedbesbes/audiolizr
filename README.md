@@ -1,13 +1,15 @@
 # audiolizr
 
-This repo shows how to build and deploy a BentoML service that performs that transcribes Youtube videos and extracts the following metadata from them: 
-- keywords and topics
-- named entities: people's name, products, organizations, etc.
-- sentiment analysis score
+Audiolizr (*a contraction of **audio** and **analyzer***) a BentoML service that transcribes Youtube videos and extracts the following metadata from them: 
+- keywords and topics using the Yake algorithm
+- a generated summary using the T5 algorithm
+- named entities (people's name, locations, products, organizations, etc.) using spaCy
+
+This service is deployed on AWS EC2 on a GPU-powered [g4dn.xlarge](https://aws.amazon.com/fr/ec2/instance-types/g4/) instance.
 
 <img src="./images/audiolizr.png">
 
-#### Dependencies
+### Dependencies
 
 - [pytube](https://github.com/pytube/pytube) 
 - [whisper](https://github.com/openai/whisper)
@@ -18,9 +20,10 @@ This repo shows how to build and deploy a BentoML service that performs that tra
 
 ### Run locally
 
-Create a pipenv environment by running 
+If you don't have the dependencies installed on your computer and want to create a fresh clean environment, run the following commands
 
 ```
+cd audiolizr/
 pipenv install 
 pipenv shell
 ```
@@ -39,7 +42,7 @@ cd src/
 bentoml serve service:svc --production --api-workers 2
 ```
 
-Build a bento
+To prepare the deployment, build the bento
 
 ```
 cd src/
@@ -62,7 +65,7 @@ Building BentoML service "speech_to_text_pipeline:m57a6etzlg4imhqa" from build c
 Successfully built Bento(tag="speech_to_text_pipeline:m57a6etzlg4imhqa").
 ```
 
-Containerize the bento 
+Containerize the bento to build a docker image
 
 ```shell
 bentoml containerize speech_to_text_pipeline
@@ -103,10 +106,10 @@ To run your newly built Bento container, use 'speech_to_text_pipeline:m57a6etzlg
     docker run -it --rm -p 3000:3000 speech_to_text_pipeline:m57a6etzlg4imhqa serve --production
 ```
 
-Run the bento from the docker image:
+Run the service from the build docker image
 
 ```
 docker run -it --rm -p 3000:3000 speech_to_text_pipeline:m57a6etzlg4imhqa serve --production --api-workers 2
 ```
 
-### Deploy to EC2 
+### Deploy to EC2
