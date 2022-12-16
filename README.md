@@ -1,6 +1,6 @@
 # audiolizr
 
-Audiolizr (***audio*** and ***analyzer***) is an API service deployed with BentoML to transcribe Youtube videos and extract the following metadata: 
+Audiolizr (***audio*** and ***analyzer***) is an API built and deployed with BentoML to transcribe Youtube videos and extract the following metadata: 
 
 - keywords and topics using the Yake algorithm
 - a generated summary using the T5 Transformer model
@@ -21,7 +21,7 @@ I've used audiolizr to process this (interesting) TEDx short video
 [![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/cyZYzTk37d8/0.jpg)](https://www.youtube.com/watch?v=cyZYzTk37d8)
 
 
-As shown in the following, the video moves through different runners to
+As shown in the following diagram, the video moves through different runners to
 
 1. download the audio
 2. transcribe the audio into text
@@ -29,12 +29,11 @@ As shown in the following, the video moves through different runners to
 4. extract named entities
 5. summarize the text
 
-note: steps 1 and 2 are executed sequentially and steps 3, 4 and 5 are executed concurrently
+note: runners 1 and 2 are executed sequentially and runners 3, 4 and 5 are executed concurrently
 
 <img src="./images/demo.png">
 
-Here's the JSON output that you'd get
-
+Here's the JSON output that you'd get at the end of the pipeline:
 
 ```json
 {
@@ -121,14 +120,14 @@ pipenv shell
 pip install git+https://github.com/openai/whisper.git 
 ```
 
-To serve the API locally, run the following command:
+To serve the API locally, run the following command. 
 
 ```
 cd src/
 bentoml serve service:svc --reload
 ```
 
-To serve the API in production mode (and enable multiple api workers), run the following command:
+To serve the API in production mode (and enable multiple api workers), run the following command (keep `--api-workers` low to avoid hammering the RAM)
 
 ```
 cd src/
@@ -141,6 +140,8 @@ If everything works as expected, build the bento to prepare the deployment:
 cd src/
 bentoml build
 ```
+
+Here's what you'll see when it's done:
 
 ```
 [nltk_data] Downloading package punkt to
@@ -164,7 +165,7 @@ When a bento is created, build a Docker image from it with this command:
 bentoml containerize speech_to_text_pipeline:m57a6etzlg4imhqa
 ```
 
-This will run multiple build steps.
+This will run multiple steps to build the docker image:
 
 ```shell
 Building OCI-compliant image for speech_to_text_pipeline:m57a6etzlg4imhqa with docker
@@ -201,11 +202,13 @@ To run your newly built Bento container, use 'speech_to_text_pipeline:m57a6etzlg
     docker run -it --rm -p 3000:3000 speech_to_text_pipeline:m57a6etzlg4imhqa serve --production
 ```
 
-Run the API from the Docker image and check that everything's running fine
+Run the API from the Docker image (with port forward) and check that everything's running fine from the host
 
 ```
 docker run -it --rm -p 3000:3000 speech_to_text_pipeline:m57a6etzlg4imhqa serve --production --api-workers 2
 ```
+
+Head over http://localhost:3000 to try out the API
 
 ### Deploy to EC2
 
@@ -292,7 +295,7 @@ Once the API is deployed, you can try it out either from the browser or via a py
 
 Let's query it from an ipython terminal and compare the inference time with my locally running smae API (with no GPU)
 
-By submitting a file 
+By upload an audo file 
 
 - local: 15.9s
 - aws: 4.57s **(+3 times faster)**
