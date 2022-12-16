@@ -36,7 +36,7 @@ note: steps 1 and 2 are executed sequentially and steps 3, 4 and 5 are executed 
 Here's the JSON output that you'd get
 
 
-```yaml
+```json
 {
   "transcript": "How much do you get paid? Don't answer that out loud. But put a number in your head. Now, how much do you think the person sitting next to you gets paid? It turns out that pay transparency, sharing salaries openly across a company, makes for a better workplace for both the employee and for the organization. You see, keeping salary secret leads to what economists call information asymmetry. This is a situation where in a negotiation, one party has loads more information than the other. And in hiring or promotion or annual raise discussions, an employer can use that secrecy to save a lot of money. Imagine how much better you could negotiate for a raise if you knew everybody's salary. Now, I realized that letting people know what you make might feel uncomfortable, but isn't it less uncomfortable than always wondering if you're being discriminated against, or if your wife or your daughter or your sister is being paid unfairly? Openness remains the best way to ensure fairness. And pay transparency does that.",
   "metadata": {
