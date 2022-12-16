@@ -1,48 +1,142 @@
 # audiolizr
 
-Audiolizr (*a contraction of **audio** and **analyzer***) is a BentoML service that transcribes Youtube videos and extracts the following metadata from them: 
+Audiolizr (***audio*** and ***analyzer***) is an API service deployed with BentoML to transcribe Youtube videos and extract the following metadata: 
+
 - keywords and topics using the Yake algorithm
-- a generated summary using the T5 algorithm
+- a generated summary using the T5 Transformer model
 - named entities (people's name, locations, products, organizations, etc.) using spaCy
 
-This service is deployed on AWS EC2 on a GPU-powered [g4dn.xlarge](https://aws.amazon.com/fr/ec2/instance-types/g4/) instance.
+This API can be used to provide a summary and additional information to understand any youtube video or audio content.  
+
+This service is deployed on AWS EC2 on a GPU-powered [g4dn.xlarge](https://aws.amazon.com/fr/ec2/instance-types/g4/) instance. (see deployment section for details)
+
 
 <img src="./images/audiolizr.png">
 
+
+### Demo
+
+I've used audiolizr to process this (interesting) TEDx short video
+
+[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/cyZYzTk37d8/0.jpg)](https://www.youtube.com/watch?v=cyZYzTk37d8)
+
+
+As shown in the following, the video moves through different runners to
+
+1. download the audio
+2. transcribe the audio into text
+3. extract keywords
+4. extract named entities
+5. summarize the text
+
+note: steps 1 and 2 are executed sequentially and steps 3, 4 and 5 are executed concurrently
+
+<img src="./images/demo.png">
+
+Here's the JSON output that you'd get
+
+https://gist.github.com/ahmedbesbes/e7f3d74db17730af9bc20ec505568f9c
+
+```json
+{
+  "transcript": "How much do you get paid? Don't answer that out loud. But put a number in your head. Now, how much do you think the person sitting next to you gets paid? It turns out that pay transparency, sharing salaries openly across a company, makes for a better workplace for both the employee and for the organization. You see, keeping salary secret leads to what economists call information asymmetry. This is a situation where in a negotiation, one party has loads more information than the other. And in hiring or promotion or annual raise discussions, an employer can use that secrecy to save a lot of money. Imagine how much better you could negotiate for a raise if you knew everybody's salary. Now, I realized that letting people know what you make might feel uncomfortable, but isn't it less uncomfortable than always wondering if you're being discriminated against, or if your wife or your daughter or your sister is being paid unfairly? Openness remains the best way to ensure fairness. And pay transparency does that.",
+  "metadata": {
+    "keywords": [
+      [
+        "pay transparency",
+        0.19212871128874295
+      ],
+      [
+        "information",
+        0.27056834789491807
+      ],
+      [
+        "salary",
+        0.27854871121244107
+      ],
+      [
+        "raise",
+        0.2849695469393418
+      ],
+      [
+        "uncomfortable",
+        0.2997431150212997
+      ],
+      [
+        "paid unfairly",
+        0.3407466612452491
+      ],
+      [
+        "information asymmetry",
+        0.4356297000199267
+      ],
+      [
+        "call information asymmetry",
+        0.4715329551423117
+      ],
+      [
+        "sharing salaries openly",
+        0.47429797071055785
+      ],
+      [
+        "call information",
+        0.49492941874515994
+      ]
+    ],
+    "entities": [
+      {
+        "entity_text": "one",
+        "entity_label": "CARDINAL",
+        "start": 438,
+        "end": 441
+      },
+      {
+        "entity_text": "annual",
+        "entity_label": "DATE",
+        "start": 521,
+        "end": 527
+      }
+    ],
+    "summary": "If you know everybody's salary, you can save a lot of money. And in hiring or promotion or annual raise discussions, an employer can use that secrecy to save money. Pay transparency, sharing salaries openly across companies, makes for better workplaces for both the employee and for the organization. I realized that letting people know what you make might feel uncomfortable, but isn't it less uncomfortable than always wondering whether your wife or your daughter is being paid unfairly?"
+  }
+}
+```
 ### Dependencies
 
 - [pytube](https://github.com/pytube/pytube) 
-- [whisper](https://github.com/openai/whisper)
+- [whisper](https://github.com/openai/whisper) (from OpenAI)
 - [Yake](https://github.com/LIAAD/yake) 
 - [spaCy](https://github.com/explosion/spaCy)
 - [transformers](https://github.com/huggingface/transformers)
 
-
 ### Run locally
 
-If you don't have the dependencies installed on your computer and want to create a fresh clean environment, run the following commands
+Run the following commands to start a fresh environment with the needed dependencies:
 
 ```
 cd audiolizr/
 pipenv install 
 pipenv shell
+
+# install whisper with pip
+pip install git+https://github.com/openai/whisper.git 
 ```
 
-Serve in development mode
+To serve the API locally, run the following command:
 
 ```
 cd src/
 bentoml serve service:svc --reload
 ```
 
-Serve in production mode
+To serve the API in production mode (and enable multiple api workers), run the following command:
 
 ```
 cd src/
 bentoml serve service:svc --production --api-workers 2
 ```
 
-To prepare the deployment, build the bento
+If everything works as expected, build the bento to prepare the deployment:
 
 ```
 cd src/
@@ -65,11 +159,13 @@ Building BentoML service "speech_to_text_pipeline:m57a6etzlg4imhqa" from build c
 Successfully built Bento(tag="speech_to_text_pipeline:m57a6etzlg4imhqa").
 ```
 
-Containerize the bento to build a docker image
+When a bento is created, build a Docker image from it with this command:
 
 ```shell
-bentoml containerize speech_to_text_pipeline
+bentoml containerize speech_to_text_pipeline:m57a6etzlg4imhqa
 ```
+
+This will run multiple build steps.
 
 ```shell
 Building OCI-compliant image for speech_to_text_pipeline:m57a6etzlg4imhqa with docker
@@ -106,10 +202,108 @@ To run your newly built Bento container, use 'speech_to_text_pipeline:m57a6etzlg
     docker run -it --rm -p 3000:3000 speech_to_text_pipeline:m57a6etzlg4imhqa serve --production
 ```
 
-Run the service from the build docker image
+Run the API from the Docker image and check that everything's running fine
 
 ```
 docker run -it --rm -p 3000:3000 speech_to_text_pipeline:m57a6etzlg4imhqa serve --production --api-workers 2
 ```
 
 ### Deploy to EC2
+
+To deploy the API on AWS, you need to follow these steps:
+
+**1. Install the required tools**
+
+- Install the AWS CLI and configure an AWS account (see AMI) with granted permissions to Cloudformation, Lambda, API Gateway and ECR. Here's the installation [guide](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html)
+- install bentoctl : `pip install bentoctl` (already installed in the pipenv environment)
+- install Terraform. This is a tool for building, configuring and managing infrastructure with code: follow these [instructions](https://developer.hashicorp.com/terraform/downloads?product_intent=terraform) depending on your OS
+
+
+**2. Setup the deployment config**
+
+To deploy the BentoML service on AWS, we will use bentoctl, a tool that helps deploy any machine learning model on any cloud infrastructure. 
+
+bentoctl uses Terraform under the hood. 
+
+Since we're going to deploy the service on EC2, we first need to install the AWS EC2 operator to generate and apply the Terraform files
+
+```shell
+bentoctl operator install aws-ec2
+```
+
+The deployment configuration must be detailed in a `deployment_config.yaml` file (this one is contained in the `bentoctl` folder)
+
+This file contains details about the instance type, the AMI ID, the region, etc.
+
+```yaml
+api_version: v1
+name: audiolizr-bentoml
+operator:
+  name: aws-ec2
+template: terraform
+spec:
+  region: eu-west-3
+  instance_type: g4dn.xlarge
+  # points to Deep Learning AMI GPU PyTorch 1.12.0 (Ubuntu 20.04) 20220913 AMI
+  ami_id: ami-0aed2a32a2ea85e67
+  enable_gpus: true
+```
+
+
+**3. Generate the Terraform files**
+
+Simply run
+
+```shell
+bentoctl generate -f deployment_config.yaml
+```
+
+This will generates the main.tf and bentoctl.tfvars
+
+
+<img src="./images/tfvars.png">
+
+**4. Build the Docker image and push it to ECR**
+
+The image upload may take time depending on your bandwith
+
+```shell
+bentoctl build -b speech_to_text_pipeline:dzunp5dzo2uhmhqa
+```
+<img src="./images/docker-build.png">
+
+**5. Apply the Terraform file to deploy to AWS EC2**
+
+In this step, we apply the Terraform file to deploy the docker image on an EC2.
+
+This step fires up an instance and configures all the needed installation
+
+<img src="./images/deployment_1.png">
+
+When everything is up and running (~ takes approximatively 10 minutes), you will be prompted with a your API URL. 
+
+<img src="./images/deployment_2.png"> 
+
+🎉 !
+
+
+**6. Test the API**
+
+Once the API is deployed, you can try it out either from the browser or via a python client.
+
+Let's query it from an ipython terminal and compare the inference time with my locally running smae API (with no GPU)
+
+By submitting a file 
+
+- local: 15.9s
+- aws: 4.57s **(+3 times faster)**
+
+<img src="./images/file_endpoint.png"> 
+
+
+By downloading a youtube video
+
+- local: 22.9s
+- aws: 10.7s (**~2 times faster**)
+
+<img src="./images/youtube_endpoint.png"> 
