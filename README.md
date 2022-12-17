@@ -309,3 +309,13 @@ By downloading a youtube video
 - aws: 10.7s (**~2 times faster**)
 
 <img src="./images/youtube_endpoint.png"> 
+
+7. Remove the service when you don't need it anymore
+
+```shell
+bentoctl destroy -f deployment_config.yaml
+```
+
+<img src="./images/destroy_1.png"> 
+<img src="./images/destroy_2.png"> 
+
