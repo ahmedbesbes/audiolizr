@@ -20,6 +20,12 @@ I've used audiolizr to process this (interesting) TEDx short video
 
 [![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/cyZYzTk37d8/0.jpg)](https://www.youtube.com/watch?v=cyZYzTk37d8)
 
+Here a demo of audiolizr in Streamlit:
+
+<video>
+  <source src="./images/demo.mp4" type="video/mp4">
+</video>
+
 
 As shown in the following diagram, the video moves through different runners to
 
@@ -117,7 +123,9 @@ pipenv install
 pipenv shell
 
 # install whisper with pip
-pip install git+https://github.com/openai/whisper.git 
+pip install git+https://github.com/openai/whisper.git
+# install spacy language model
+python -m spacy download en_core_web_md 
 ```
 
 To serve the API locally, run the following command. 
