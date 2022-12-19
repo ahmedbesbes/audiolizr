@@ -20,7 +20,7 @@ I've used audiolizr to process this (interesting) TEDx short video
 
 [![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/cyZYzTk37d8/0.jpg)](https://www.youtube.com/watch?v=cyZYzTk37d8)
 
-Here a demo of audiolizr in Streamlit
+Here a demo of audiolizr in Streamlit.
 
 <video>
   <source src="./images/demo.mp4" type="video/mp4">
