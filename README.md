@@ -16,16 +16,14 @@ This service is deployed on AWS EC2 on a GPU-powered [g4dn.xlarge](https://aws.a
 
 ### Demo
 
+
 I've used audiolizr to process this (interesting) TEDx short video
 
 [![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/cyZYzTk37d8/0.jpg)](https://www.youtube.com/watch?v=cyZYzTk37d8)
 
 Here a demo of audiolizr in Streamlit.
 
-<video>
-  <source src="./images/demo.mp4" type="video/mp4">
-</video>
-
+https://user-images.githubusercontent.com/6267065/208546956-a9e97789-2933-40b8-8081-db585b5f5c4d.mov
 
 As shown in the following diagram, the video moves through different runners to
 
