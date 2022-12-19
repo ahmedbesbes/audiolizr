@@ -13,6 +13,8 @@ yake = "*"
 nltk = "*"
 sentencepiece = "*"
 bentoctl = "*"
+streamlit = "*"
+streamlit-player = "*"
 
 [dev-packages]
 black = "*"
